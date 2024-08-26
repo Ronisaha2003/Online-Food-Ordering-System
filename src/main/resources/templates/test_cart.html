@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <style>
+        body {
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="my-4">Check Out For Final Payment</h2>
+        
+        <form action="/processForm" method="post">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="form-control" th:value="${imageGallery.name}" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control" readonly th:text="${imageGallery.description}"></textarea>
+            </div>
+            
+            
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="text" id="price" name="price" class="form-control" th:value="${imageGallery.price}" readonly>
+            </div>
+            
+            
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        
+    </div>
+
+    <!-- Bootstrap JS and dependencies (Optional, for certain Bootstrap features) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

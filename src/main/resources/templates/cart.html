@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">
+  <style>
+  
+  
+  
+  </style>
+</head>
+<body>
+    <div class="Container">
+    <form th:action="@{/add}" th:object="${item}" method="post" enctype="multipart/form-data">
+    <Label>Item Name:</Label>
+     <input type="text" name="name" placeholder="Item Name" required /><br>     
+    <Label>Price:</Label>
+        <input type="number" name="price" placeholder="Price" step="0.01" required /><br>
+    <Label>Quantity:</Label>
+        <input type="number" name="quantity" placeholder="Quantity" min="1" required /><br>
+         <input type="file" name="imageFile" accept="image/*" /><br>
+        <button type="submit" class="button">Add to Cart</button>
+    </form>
+    </div>
+    <br />
+    <table border="1"  class = "table table-striped table-responsive-md">
+        <thead>
+            <tr>
+                 <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        <tr th:each="item : ${items}">
+                <td>
+                     <img th:if="${item.image != null}" th:src="@{'data:image/jpeg;base64,' + ${item.imageBase64}}" width="100" height="100"/>
+                </td>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.price}"></td>
+                <td>
+                    <input type="number" th:value="${item.quantity}" min="1" class="quantity" data-id="${item.id}" />
+                </td>
+                <td th:text="${item.price * item.quantity}"></td>
+                <td>
+                    <a th:href="@{/delete/{id}(id=${item.id})}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <h2>Total: <span id="total"></span></h2>
+    <button>CheckOut</button>
+    <script>
+    function calculateTotal() {
+        let total = 0;
+        $('tbody tr').each(function() {
+            const price = parseFloat($(this).find('td:nth-child(3)').text());
+            const quantity = parseInt($(this).find('.quantity').val());
+            total += price * quantity;
+        });
+        $('#total').text(total.toFixed(2));
+    }
+
+    $(document).ready(function() {
+        calculateTotal();
+        $('.quantity').on('change', function() {
+            const id = $(this).data('id');
+            const quantity = $(this).val();
+            $.ajax({
+                url: '/update',
+                type: 'POST',
+                data: {
+                    id: id,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    calculateTotal();
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>

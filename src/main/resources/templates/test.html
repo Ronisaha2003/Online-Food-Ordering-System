@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+          <style type="text/css">
+          .card {
+    width: 16rem;
+    transition: transform 0.3s ease-in-out; /* Apply transition on transform property */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Scale the card on hover */
+}
+          
+          .text-center {
+    text-align: center; /* Center aligns text horizontally */
+    margin-top: 53px; /* Optional: Adds some top margin for spacing */
+}
+          </style>
+</head>
+<body>
+<div th:include="navbar::nav1"></div>
+
+<h1  class="text-center">Our Products</h1>
+    <div class="container mt-4">
+        <div class="row">
+            <div th:each="imageGallery, hh : ${images}" class="col-md-3 mb-3">
+                <div class="card" style="max-width: 300px;">
+                    <img th:src="@{'/image/display/' + ${imageGallery.id}}"
+                         class="card-img-top" alt="" style="width:100%;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${imageGallery.name}"></h5>
+                        <p class="card-text" th:text="${imageGallery.description}"></p>
+                        <p class="card-text"><small class="text-muted"
+                                th:text="${#dates.format({imageGallery.createDate}, 'dd-MM-yyyy')}"></small></p>
+                        <p class="card-text" th:text="${imageGallery.price}"></p>
+                        <a th:href="@{/image/imageDetails(id=${imageGallery.id})}" class="btn btn-info btn-block" target="_blank">View</a>
+                        <a  th:href="@{/checkout(id=${imageGallery.id})}" class="btn btn-success btn-block">Buy Now</a>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+</body>
+</html>
